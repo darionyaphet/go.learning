@@ -25,4 +25,13 @@ func main() {
 	}
 
 	fmt.Println(m0)
+
+	if val, ok := m0["one"]; ok {
+		fmt.Printf("%d is find \n", val)
+	}
+
+	if val, ok := m0["ono"]; !ok {
+		fmt.Printf("%d is not find \n", val)
+	}
+
 }
