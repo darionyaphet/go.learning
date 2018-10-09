@@ -17,7 +17,6 @@ func main() {
 
 	client := rpc.NewRpcServiceClientFactory(transport, protocolFactory)
 	if err := t.Open(); err != nil {
-		fmt.Fprintln(os.Stderr, "Error opening socket to 127.0.0.1:19090", " ", err)
 		os.Exit(1)
 	}
 	defer transport.Close()

@@ -3,27 +3,61 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"strings"
 )
 
+type Animal int
+
+const (
+	Unknown Animal = iota
+	Gopher
+	Zebra
+)
+
+func (a *Animal) UnmarshalJSON(b []byte) error {
+	var s string
+	if err := json.Unmarshal(b, &s); err != nil {
+		return err
+	}
+
+	switch strings.ToLower(s) {
+	case "gopher":
+		*a = Gopher
+	case "zebra":
+		*a = Zebra
+	default:
+		*a = Unknown
+	}
+	return nil
+}
+
+func (a Animal) MarshalJSON() ([]byte, error) {
+	var s string
+	switch a {
+	case Gopher:
+		s = "gopher"
+	case Zebra:
+		s = "zebra"
+	default:
+		s = "unknown"
+	}
+
+	return json.Marshal(s)
+}
+
 func main() {
-	type Book struct {
-		Name  string
-		Price float64 // `json:"price,string"`
+	blob := `["gopher","armadillo","zebra","unknown","gopher","bee","gopher","zebra"]`
+	var zoo []Animal
+	if err := json.Unmarshal([]byte(blob), &zoo); err != nil {
+		log.Fatal(err)
 	}
 
-	var person = struct {
-		Name string
-		Age  int
-		Book
-	}{
-		Name: "polaris",
-		Age:  30,
-		Book: Book{
-			Price: 3.4,
-			Name:  "Go语言",
-		},
+	census := make(map[Animal]int)
+	for _, animal := range zoo {
+		census[animal] += 1
 	}
 
-	buf, _ := json.Marshal(person)
-	fmt.Println(string(buf))
+	fmt.Printf("Zoo Census:\n* Gophers: %d\n* Zebras:  %d\n* Unknown: %d\n",
+		census[Gopher], census[Zebra], census[Unknown])
 }
