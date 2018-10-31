@@ -5,12 +5,11 @@ package tutorial
 
 import (
 	"bytes"
-	"reflect"
 	"context"
 	"fmt"
 	"git.apache.org/thrift.git/lib/go/thrift"
+	"reflect"
 	"shared"
-
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -21,14 +20,15 @@ var _ = reflect.DeepEqual
 var _ = bytes.Equal
 
 var _ = shared.GoUnusedProtection__
+
 const INT32CONSTANT = 9853
+
 var MAPCONSTANT map[string]string
 
 func init() {
-MAPCONSTANT = map[string]string{
-  "hello": "world",
-  "goodnight": "moon",
-}
+	MAPCONSTANT = map[string]string{
+		"hello":     "world",
+		"goodnight": "moon",
+	}
 
 }
-
