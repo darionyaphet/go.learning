@@ -42,7 +42,6 @@ func (a Animal) MarshalJSON() ([]byte, error) {
 	default:
 		s = "unknown"
 	}
-
 	return json.Marshal(s)
 }
 
